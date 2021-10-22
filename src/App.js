@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
@@ -10,7 +10,7 @@ function App() {
 
   // If using '.then' instead of async/await, we would use '.catch()' to catch any errors
   // With async/await (as below), we use try/catch
-  async function fetchMoviesHandler() {
+  const fetchMoviesHandler = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
@@ -38,7 +38,11 @@ function App() {
       setError(error.message); // The 'error.message' will be the 'Something went wrong!' text set above
     };
     setIsLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchMoviesHandler();
+  }, [fetchMoviesHandler]);
 
   let content = <p>Found no movies</p>;
 
